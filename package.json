@@ -1,6 +1,6 @@
 {
   "name": "podcast-dl",
-  "version": "7.4.3",
+  "version": "7.4.4",
   "description": "A CLI for downloading podcasts.",
   "type": "module",
   "bin": "./bin/bin.js",
@@ -43,7 +43,6 @@
     "husky": "^4.2.5",
     "lint-staged": "^10.1.7",
     "prettier": "2.3.2",
-    "rimraf": "^3.0.2",
     "standard-version": "^9.0.0"
   },
   "dependencies": {
