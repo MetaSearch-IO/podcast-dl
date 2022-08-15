@@ -173,11 +173,20 @@ let downloadItemsAsync = async ({
     const logMessage = getLogMessageWithMarker(marker);
     const { url: episodeAudioUrl, ext: audioFileExt } =
       getEpisodeAudioUrlAndExt(item);
+    const episodePath = _path.resolve(basePath, item.guid);
 
     if (!episodeAudioUrl) {
       hasErrors = true;
       logError(`${marker} | Unable to find episode download URL`);
       return;
+    }
+
+    if (!fs.existsSync(episodePath)) {
+      logMessage(
+        `${episodePath} does not exist. Creating...`,
+        LOG_LEVELS.important
+      );
+      fs.mkdirSync(episodePath, { recursive: true });
     }
 
     const episodeFilename = getFilename({
@@ -187,7 +196,7 @@ let downloadItemsAsync = async ({
       ext: audioFileExt,
       template: episodeTemplate,
     });
-    const outputPodcastPath = _path.resolve(basePath, episodeFilename);
+    const outputPodcastPath = _path.resolve(episodePath, episodeFilename);
 
     try {
       await download({
@@ -259,7 +268,7 @@ let downloadItemsAsync = async ({
         ext: episodeMetaExt,
         template: episodeTemplate,
       });
-      const outputEpisodeMetaPath = _path.resolve(basePath, episodeMetaName);
+      const outputEpisodeMetaPath = _path.resolve(episodePath, episodeMetaName);
 
       try {
         logMessage("Saving episode metadata...");

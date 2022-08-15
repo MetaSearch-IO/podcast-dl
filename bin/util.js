@@ -253,7 +253,11 @@ const getItemsToDownload = ({
             template: episodeTemplate,
           });
 
-          const outputImagePath = path.resolve(basePath, episodeImageName);
+          const outputImagePath = path.resolve(
+            basePath,
+            item.guid,
+            episodeImageName
+          );
           item._extra_downloads.push({
             url: episodeImageUrl,
             outputPath: outputImagePath,
