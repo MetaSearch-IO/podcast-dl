@@ -3,6 +3,7 @@ import _path from "path";
 import { promisify } from "util";
 import stream from "stream";
 import fs from "fs";
+import dayjs from "dayjs";
 import got from "got";
 import { throttle } from "throttle-debounce";
 
@@ -173,7 +174,18 @@ let downloadItemsAsync = async ({
     const logMessage = getLogMessageWithMarker(marker);
     const { url: episodeAudioUrl, ext: audioFileExt } =
       getEpisodeAudioUrlAndExt(item);
-    const episodePath = _path.resolve(basePath, item.guid);
+
+    const episodePubDate = dayjs(new Date(item.pubDate));
+    const episodePubYear = episodePubDate.format("YYYY");
+    const episodePubMonth = episodePubDate.format("MM");
+    const episodePubDay = episodePubDate.format("DD");
+    const episodePath = _path.resolve(
+      basePath,
+      episodePubYear,
+      episodePubMonth,
+      episodePubDay,
+      item.guid
+    );
 
     if (!episodeAudioUrl) {
       hasErrors = true;
