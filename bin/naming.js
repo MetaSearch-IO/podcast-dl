@@ -23,6 +23,7 @@ const getFilename = ({ item, ext, url, feed, template }) => {
     ["podcast_title", feed.title || ""],
     ["podcast_link", feed.link || ""],
     ["duration", (item.itunes && item.itunes.duration) || ""],
+    ["guid", item.guid || ""],
   ];
 
   let name = template;

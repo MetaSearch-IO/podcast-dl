@@ -184,7 +184,7 @@ let downloadItemsAsync = async ({
       episodePubYear,
       episodePubMonth,
       episodePubDay,
-      item.guid
+      item.title
     );
 
     if (!episodeAudioUrl) {

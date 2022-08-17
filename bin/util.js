@@ -253,9 +253,17 @@ const getItemsToDownload = ({
             template: episodeTemplate,
           });
 
+          const episodePubDate = dayjs(new Date(item.pubDate));
+          const episodePubYear = episodePubDate.format("YYYY");
+          const episodePubMonth = episodePubDate.format("MM");
+          const episodePubDay = episodePubDate.format("DD");
+
           const outputImagePath = path.resolve(
             basePath,
-            item.guid,
+            episodePubYear,
+            episodePubMonth,
+            episodePubDay,
+            item.title,
             episodeImageName
           );
           item._extra_downloads.push({
