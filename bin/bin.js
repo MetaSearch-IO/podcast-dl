@@ -10,7 +10,6 @@ import { download } from "./async.js";
 import {
   getArchiveKey,
   getFeed,
-  getTranscriptUrl,
   getImageUrl,
   getItemsToDownload,
   getUrlExt,
