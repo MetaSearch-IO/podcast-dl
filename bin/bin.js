@@ -10,6 +10,7 @@ import { download } from "./async.js";
 import {
   getArchiveKey,
   getFeed,
+  getTranscriptUrl,
   getImageUrl,
   getItemsToDownload,
   getUrlExt,
@@ -73,6 +74,7 @@ commander
     },
     METADATA_FORMATS.json
   )
+  .option("--include-episode-transcripts", "download found episode transcripts")
   .option("--include-episode-images", "download found episode images")
   .option(
     "--offset <number>",
@@ -153,6 +155,7 @@ const {
   episodeTemplate,
   includeMeta,
   includeEpisodeMeta,
+  includeEpisodeTranscripts,
   includeEpisodeImages,
   metadataFormat,
   offset,
@@ -311,6 +314,7 @@ const main = async () => {
     before,
     episodeRegex,
     episodeTemplate,
+    includeEpisodeTranscripts,
     includeEpisodeImages,
   });
 

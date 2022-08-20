@@ -166,6 +166,7 @@ const getItemsToDownload = ({
   after,
   episodeRegex,
   episodeTemplate,
+  includeEpisodeTranscripts,
   includeEpisodeImages,
 }) => {
   const { startIndex, shouldGo, next } = getLoopControls({
@@ -230,6 +231,49 @@ const getItemsToDownload = ({
       const item = feed.items[i];
       item._originalIndex = i;
       item._extra_downloads = [];
+
+      if (includeEpisodeTranscripts) {
+        const episodeTranscriptUrl = getTranscriptUrl(item);
+
+        if (episodeTranscriptUrl) {
+          const episodeTranscriptFileExt = getUrlExt(episodeTranscriptUrl);
+          const episodeTranscriptArchiveKey = getArchiveKey({
+            prefix: archiveUrl,
+            name: getArchiveFilename({
+              pubDate,
+              name: title,
+              ext: episodeTranscriptFileExt,
+            }),
+          });
+
+          const episodeTranscriptName = getFilename({
+            item,
+            feed,
+            url: episodeAudioUrl,
+            ext: episodeTranscriptFileExt,
+            template: episodeTemplate,
+          });
+
+          const episodePubDate = dayjs(new Date(item.pubDate));
+          const episodePubYear = episodePubDate.format("YYYY");
+          const episodePubMonth = episodePubDate.format("MM");
+          const episodePubDay = episodePubDate.format("DD");
+
+          const outputTranscriptPath = path.resolve(
+            basePath,
+            episodePubYear,
+            episodePubMonth,
+            episodePubDay,
+            item.title,
+            episodeTranscriptName
+          );
+          item._extra_downloads.push({
+            url: episodeTranscriptUrl,
+            outputPath: outputTranscriptPath,
+            key: episodeTranscriptArchiveKey,
+          });
+        }
+      }
 
       if (includeEpisodeImages) {
         const episodeImageUrl = getImageUrl(item);
@@ -488,6 +532,14 @@ const getImageUrl = ({ image, itunes }) => {
   return null;
 };
 
+const getTranscriptUrl = ({ raw }) => {
+  if (raw && raw["podcast:transcript"]) {
+    return raw["podcast:transcript"][0]["$"]["url"];
+  }
+
+  return null;
+};
+
 const getFeed = async (url) => {
   const { href } = new URL(url);
 
@@ -674,6 +726,7 @@ export {
   writeToArchive,
   getEpisodeAudioUrlAndExt,
   getFeed,
+  getTranscriptUrl,
   getImageUrl,
   getItemsToDownload,
   getTempPath,
