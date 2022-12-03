@@ -202,8 +202,6 @@ const main = async () => {
     getFolderName({ feed, template: outDir })
   );
 
-  logFeedInfo(feed);
-
   if (list) {
     if (feed.items && feed.items.length) {
       const listFormat = typeof list === "boolean" ? "table" : list;
@@ -225,6 +223,12 @@ const main = async () => {
   if (info || list) {
     process.exit(0);
   }
+
+  /**
+  LogFeedInfo is moved here because we don't want to have stdout contain anything other than the JSON or table
+  */
+
+  logFeedInfo(feed);
 
   if (!fs.existsSync(basePath)) {
     logMessage(`${basePath} does not exist. Creating...`, LOG_LEVELS.important);
