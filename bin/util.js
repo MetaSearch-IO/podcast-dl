@@ -363,6 +363,8 @@ const logItemsList = ({
       episodeNum: feed.items.length - item._originalIndex,
       title: item.title,
       pubDate: item.pubDate,
+      pubTimeISO: dayjs(new Date(item.pubDate)).toISOString(),
+      guid: item.guid,
     };
   });
 
