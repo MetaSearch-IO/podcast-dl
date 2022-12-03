@@ -364,6 +364,7 @@ const logItemsList = ({
       title: item.title,
       pubDate: item.pubDate,
       pubTimeISO: dayjs(new Date(item.pubDate)).toISOString(),
+      guid: item.guid,
     };
   });
 
